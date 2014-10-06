@@ -51,7 +51,7 @@ angular
 						$scope.windowdata = next; 
 						console.log('windowdata ', $scope.windowdata.length);
 					});
-				}, 300);
+				}, 400);
 			};
 		loader.load(files).then(function(rows) { 
 			console.log('continuation ', rows);
