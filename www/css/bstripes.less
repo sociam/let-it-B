@@ -3,6 +3,31 @@
 	font-family:'helvetica neue', 'helvetica';
 }
 
+@transitiondelay: 0.8s;
+.transition{
+  text-decoration:none !important; 
+  -webkit-transition:all @transitiondelay ease-in-out;
+  -moz-transition:all @transitiondelay ease-in-out;
+  -o-transition:all @transitiondelay ease-in-out;
+  transition:all @transitiondelay ease-in-out;  
+}
+html { height:100%; width:100%; }
 body { 
 	padding:0px; margin:0px;
+	width:80%;
+	.barsegs {
+		background-color:#5fff33;
+		.transition;
+		width:100%;
+		height:1000px;
+		border:5px solid #eee;
+		.bar {
+			.transition;
+			height:100%;
+			display:inline-block;
+			&.board { background-color:#b23e00; }
+			&.collection { background-color:#ff6919; }
+			&.subjects { background-color:#5fff33; }
+		}
+	}
 }
