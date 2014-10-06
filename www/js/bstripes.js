@@ -26,13 +26,33 @@ angular
 		var files = {
 			snapshot: 'data/snapshot_serengeti_anon_comments_DO_NOT_PUBLISH-06-10-2014.tsv',
 			galaxyzoo: 'data/galaxy_zoo_anon_comments_DO_NOT_PUBLISH-06-10-2014.tsv'
-		}, u = utils, sa = function(f) { utils.safeApply($scope, f); };
-
+		}, u = utils, sa = function(f) { utils.safeApply($scope, f); },
+			windowSize = 1000*3600*24,
+			sliceToNextT = function(data, start, twindow) {
+				if (start === undefined) { return []; }
+				var stl = start.created.valueOf();
+				return data.filter(function(r) { 
+					var rcl = r.created.valueOf();
+					return rcl >= stl && rcl <= stl + twindow;
+				});
+			},
+			startSampling = function(all) {
+				var cur = all[0];
+				setInterval(function() {
+					console.log('sampling! ', cur);
+					sa(function() {
+						$scope.windowdata = sliceToNextT(all, cur, windowSize);
+						console.log('new windowData ', $scope.windowdata.length);
+						cur = $scope.windowdata[$scope.windowdata.length - 1];
+					});
+				}, 1000);
+			};
 		loader.load(files).then(function(rows) { 
 			console.log('continuation ', rows);
 			var all = u.flatten(rows);
 			all.sort(function(a, b) { return a.created.valueOf() - b.created.valueOf(); });
 			sa(function() { $scope.data = all; });
+			startSampling(all);
 			console.log('all > ', all);
 		}).fail(function(x) { 
 			console.error('error', x);
