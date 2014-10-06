@@ -27,24 +27,31 @@ angular
 			snapshot: 'data/snapshot_serengeti_anon_comments_DO_NOT_PUBLISH-06-10-2014.tsv',
 			galaxyzoo: 'data/galaxy_zoo_anon_comments_DO_NOT_PUBLISH-06-10-2014.tsv'
 		}, u = utils, sa = function(f) { utils.safeApply($scope, f); },
-			windowSize = 1000*3600*24,
+			perday = 1000*3600*24,
+			perhour = 1000*3600,
+			windowSize = perhour,
 			sliceToNextT = function(data, start, twindow) {
 				if (start === undefined) { return []; }
 				var stl = start.created.valueOf();
 				return data.filter(function(r) { 
 					var rcl = r.created.valueOf();
-					return rcl >= stl && rcl <= stl + twindow;
+					return rcl > stl && rcl < stl + twindow;
 				});
 			},
 			startSampling = function(all) {
 				var cur = all[0];
 				setInterval(function() {
 					sa(function() { 
-						$scope.windowdata = sliceToNextT(all, cur, windowSize); 
-						cur = $scope.windowdata[$scope.windowdata.length - 1];
+						var next = sliceToNextT(all, cur, windowSize);
+						if (next.length == 0) { 
+							cur = all[all.indexOf(cur) + 1];
+						} else {
+							cur = next[next.length - 1];
+						}
+						$scope.windowdata = next; 
 						console.log('windowdata ', $scope.windowdata.length);
 					});
-				}, 3000);
+				}, 300);
 			};
 		loader.load(files).then(function(rows) { 
 			console.log('continuation ', rows);
