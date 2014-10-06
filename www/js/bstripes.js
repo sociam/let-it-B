@@ -39,13 +39,12 @@ angular
 			startSampling = function(all) {
 				var cur = all[0];
 				setInterval(function() {
-					console.log('sampling! ', cur);
-					sa(function() {
-						$scope.windowdata = sliceToNextT(all, cur, windowSize);
-						console.log('new windowData ', $scope.windowdata.length);
+					sa(function() { 
+						$scope.windowdata = sliceToNextT(all, cur, windowSize); 
 						cur = $scope.windowdata[$scope.windowdata.length - 1];
+						console.log('windowdata ', $scope.windowdata.length);
 					});
-				}, 1000);
+				}, 3000);
 			};
 		loader.load(files).then(function(rows) { 
 			console.log('continuation ', rows);
@@ -57,4 +56,5 @@ angular
 		}).fail(function(x) { 
 			console.error('error', x);
 		});
+		window.scope = $scope;
 	});
