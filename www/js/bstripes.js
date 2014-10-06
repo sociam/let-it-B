@@ -26,11 +26,13 @@ angular
 		var files = {
 			snapshot: 'data/snapshot_serengeti_anon_comments_DO_NOT_PUBLISH-06-10-2014.tsv',
 			galaxyzoo: 'data/galaxy_zoo_anon_comments_DO_NOT_PUBLISH-06-10-2014.tsv'
-		}, u = utils;
+		}, u = utils, sa = function(f) { utils.safeApply($scope, f); };
+
 		loader.load(files).then(function(rows) { 
 			console.log('continuation ', rows);
 			var all = u.flatten(rows);
 			all.sort(function(a, b) { return a.created.valueOf() - b.created.valueOf(); });
+			sa(function() { $scope.data = all; });
 			console.log('all > ', all);
 		}).fail(function(x) { 
 			console.error('error', x);
