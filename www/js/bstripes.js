@@ -48,6 +48,7 @@ angular
 						} else {
 							cur = next[next.length - 1];
 						}
+						$scope.cur = cur;
 						$scope.windowdata = next; 
 						console.log('windowdata ', $scope.windowdata.length);
 					});
