@@ -15,6 +15,7 @@ angular
 					sa = function(f) { utils.safeApply($scope, f); }, 
 					colorscale = $scope.color = d3.scale.category20(),
 					byKey, total,
+					MULTIPLIER = 0.20,
 					update = function(val) { 
 						if (val === undefined) { return; }
 						// update bykey
@@ -49,7 +50,7 @@ angular
 
 				$scope.toPCT = function(v) { 
 					if (!v || !$scope.total) { return 0; }
-					return Math.min(100.0,((v.length/(1.0*$scope.total))*100).toFixed(2));
+					return MULTIPLIER*Math.min(100.0,((v.length/(1.0*$scope.total))*100).toFixed(2));
 				};
 				$scope.$watch('data', update);
 				update($scope.data);

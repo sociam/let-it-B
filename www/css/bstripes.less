@@ -27,6 +27,11 @@ body {
 		font-size:22pt;
 		padding:0px;
 		color:rgba(0,0,0,0.4);
+		.liberator { 
+			// prevents wrapping problem
+			width:500%; // affects multiplier in contributor-stripes.js
+			height:100%;
+		}
 		.bar {
 			.transition;
 			padding:5px 0px 0px 5px;
@@ -38,5 +43,4 @@ body {
 			&.subjects { background-color:#5fff33; width:1000px !important;  }
 		}
 	}
-	.canvas { width:1000000px; height:500px;  }
 }
