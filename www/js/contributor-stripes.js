@@ -13,7 +13,7 @@ angular
 				// console.log('stripes scope ', $scope);
 				var u = utils,
 					sa = function(f) { utils.safeApply($scope, f); }, 
-					colorscale = d3.scale.ordinal(),
+					colorscale = $scope.color = d3.scale.category20(),
 					byKey, total,
 					update = function(val) { 
 						if (val === undefined) { return; }
@@ -33,6 +33,7 @@ angular
 						sa(function() { 
 							$scope.keys = newKeys; 
 							$scope.byKey = $scope.byKey || {};
+							$scope.lastcolor = $scope.color(newKeys[newKeys.length - 1]);
 							_(byKey).map(function(v,k) { 
 								$scope.byKey[k] = $scope.byKey[k] || {};
 								$scope.byKey[k].width = $scope.toPCT(v);
@@ -43,7 +44,7 @@ angular
 
 				$scope.toPCT = function(v) { 
 					if (!v || !$scope.total) { return "0px"; }
-					return (v.length/(1.0*$scope.total))*100 + "%";
+					return (v.length/(1.0*$scope.total))*100;
 				};
 				$scope.$watch('data', update);
 				update($scope.data);
