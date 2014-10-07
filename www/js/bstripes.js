@@ -10,12 +10,18 @@ angular
 				return u.when(_(files).keys().map(function(project) { 
 					var f = files[project], d = u.deferred();
 					console.log('loading ', f);
+					var count = function(text,pattern) {
+						var result = text.match(pattern);
+						return result ? result.length : 0;
+					};
 					d3.tsv(f, function(rows) {
-						console.log('rows ', rows);
+						// console.log('rows ', rows);
 						rows.map(function(r) { 
 							r.project = project;
 							r.created = new Date(r.created_at);
 							r.words = r.body.split(' ').filter(function(x) { return x.trim().length > 0; }).length;
+							r.hashtags = count(r.body, /\S*#(?:\[[^\]]+\]|\S+)/g);
+							// r.questions = r.body.split(' ').filter(function(x) { return x.trim().length > 0; }).length;
 						});
 						d.resolve(rows);
 					});
