@@ -6,7 +6,7 @@ angular
 	.directive('contributorStripes', function() {
 		return {
 			restrict:'E',
-			scope:{ windowdata:'=', field:'@' },
+			scope:{ data:'=', field:'@' },
 			templateUrl:'tmpl/contributor-stripes.html',
 			controller:function($scope, utils) { 
 				// $scope.data will be the raw data
@@ -15,9 +15,9 @@ angular
 					sa = function(f) { utils.safeApply($scope, f); };
 
 
-				$scope.$watch('windowdata', function(val) { 
+				$scope.$watch('data', function(val) { 
 					if (val) { 
-						var creature = u.dictCat($scope.windowdata.map(function(r) {
+						var creature = u.dictCat($scope.data.map(function(r) {
 							return [r[$scope.field], r];
 						}));
 						var total = _(creature).values()

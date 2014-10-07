@@ -49,13 +49,14 @@ angular
 							cur = next[next.length - 1];
 						}
 						$scope.cur = cur;
-						$scope.windowdata = next; 
-						console.log('windowdata ', $scope.windowdata.length);
+						$scope.sample = next; 
+						console.log('sample ', $scope.sample.length);
 					});
 				}, 400);
 			};
+
+		// load the data and do things!
 		loader.load(files).then(function(rows) { 
-			console.log('continuation ', rows);
 			var all = u.flatten(rows);
 			all.sort(function(a, b) { return a.created.valueOf() - b.created.valueOf(); });
 			sa(function() { $scope.data = all; });
