@@ -60,7 +60,7 @@ angular
 						$scope.sample = next; 
 						console.log('sample ', $scope.sample.length);
 					});
-				}, 2000);
+				}, 1000);
 			};
 
 		// load the data and do things!

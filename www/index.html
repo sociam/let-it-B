@@ -10,6 +10,8 @@
         <title>b-stripes</title>
     </head>
     <body ng-app="bstripes" ng-controller="main">
+        <h2>zooniverse multi-community discussion awareness</h2>
+        <div class="labels">Current sample size : {{ sample.length }}<div ng-show="sample.length > 0" class="stdate">{{ sample[0].created.toLocaleDateString() }} ({{ sample[0].created.toLocaleTimeString() }} - {{ sample[sample.length-1].created.toLocaleTimeString()}})</div></div>
         <contributor-stripes data='sample' field='focus_base_type'></contributor-stripes>
         <contributor-stripes data='sample' field='words'></contributor-stripes>
         <contributor-stripes data='sample' field='hashtags'></contributor-stripes>
