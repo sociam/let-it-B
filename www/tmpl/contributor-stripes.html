@@ -1,0 +1,4 @@
+<div class="contributor-stripes bstripes">
+	<div class="barsegs" ng-style="{'background-color':lastcolor}"><div class="liberator"><div class="bar" ng-repeat="(k,v) in byKey" 
+				ng-class="{board:k=='Board',collection:k=='Collection',subjects:k=='Subject'}" 
+				ng-style="{width:v.width+'%','background-color':color(k)}">{{ k }}</div></div><!-- liberator --></div></div>
