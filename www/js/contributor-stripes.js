@@ -25,6 +25,8 @@ angular
 								.map(function(v) { return v.length; })
 								.reduce(function(a,b) { return a + b; }, 0);
 
+						// console.log('values : ', _(byKey).values().map(function(v) { return v.length; }), total);
+
 						var newKeys = _($scope.keys || []).union(_(byKey).keys());
 						if (!$scope.keys || $scope.keys.length !== newKeys.length) { 
 							newKeys.sort();
@@ -34,17 +36,20 @@ angular
 							$scope.keys = newKeys; 
 							$scope.byKey = $scope.byKey || {};
 							$scope.lastcolor = $scope.color(newKeys[newKeys.length - 1]);
-							_(byKey).map(function(v,k) { 
+							_(byKey).map(function(v,k) {
 								$scope.byKey[k] = $scope.byKey[k] || {};
 								$scope.byKey[k].width = $scope.toPCT(v);
 							});
+							var empties = _($scope.byKey).chain().keys().difference(_(byKey).keys()).value();
+							// console.log('difference -- ', _($scope.byKey).keys().length);
+							empties.map(function(r) { $scope.byKey[r].width = $scope.toPCT([]); });
 							$scope.total = total;
 						});
 					};
 
 				$scope.toPCT = function(v) { 
-					if (!v || !$scope.total) { return "0px"; }
-					return (v.length/(1.0*$scope.total))*100;
+					if (!v || !$scope.total) { return 0; }
+					return Math.min(100.0,((v.length/(1.0*$scope.total))*100).toFixed(2));
 				};
 				$scope.$watch('data', update);
 				update($scope.data);

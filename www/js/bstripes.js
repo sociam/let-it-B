@@ -14,7 +14,8 @@ angular
 						console.log('rows ', rows);
 						rows.map(function(r) { 
 							r.project = project;
-							r.created = new Date(r['created_at']);
+							r.created = new Date(r.created_at);
+							r.words = r.body.split(' ').filter(function(x) { return x.trim().length > 0; }).length;
 						});
 						d.resolve(rows);
 					});
@@ -29,7 +30,8 @@ angular
 		}, u = utils, sa = function(f) { utils.safeApply($scope, f); },
 			perday = 1000*3600*24,
 			perhour = 1000*3600,
-			windowSize = perhour,
+			persixhours = 24*1000*3600,
+			windowSize = persixhours,
 			sliceToNextT = function(data, start, twindow) {
 				if (start === undefined) { return []; }
 				var stl = start.created.valueOf();
@@ -52,11 +54,12 @@ angular
 						$scope.sample = next; 
 						console.log('sample ', $scope.sample.length);
 					});
-				}, 400);
+				}, 2000);
 			};
 
 		// load the data and do things!
 		loader.load(files).then(function(rows) { 
+			// console.log('rows >>>>>>>>>>> ', rows);
 			var all = u.flatten(rows);
 			all.sort(function(a, b) { return a.created.valueOf() - b.created.valueOf(); });
 			sa(function() { $scope.data = all; });
