@@ -21,6 +21,9 @@ angular
 							r.created = new Date(r.created_at);
 							r.words = r.body.split(' ').filter(function(x) { return x.trim().length > 0; }).length;
 							r.hashtags = count(r.body, /\S*#(?:\[[^\]]+\]|\S+)/g);
+							r.sentences = count(r.body, /(?:[\.?!][A-Za-z\s])/g) + 1;							
+							r.questions = count(r.body, /(?:[\?])/g);							
+
 							// r.questions = r.body.split(' ').filter(function(x) { return x.trim().length > 0; }).length;
 						});
 						d.resolve(rows);
