@@ -1,4 +1,4 @@
-/* jshint undef: true, strict:false, trailing:false, unused:false */
+/* jshint undef: true, strict:false, trailing:false, unused:false, quotmark:false */
 /* global require, exports, console, process, module, L, angular, _, jQuery, FastClick, device, document, window, setTimeout, d3 */
 
 angular
@@ -14,27 +14,37 @@ angular
 				var u = utils,
 					sa = function(f) { utils.safeApply($scope, f); }, 
 					colorscale = d3.scale.ordinal(),
-					keyOrder, byKey,
+					byKey, total,
 					update = function(val) { 
 						if (val === undefined) { return; }
-						var byKey = u.dictCat($scope.data.map(function(r) {
+						// update bykey
+						byKey = u.dictCat($scope.data.map(function(r) {
 							return [r[$scope.field], r];
-						}));						
-						var total = _(byKey).values()
-									.map(function(entries) { return entries.length; })
-									.reduce(function(a,b) { return a + b; }, 0);
-						if ($scope.bars === undefined) { 
-							$scope.bars = [];
-							var barnames = _(byKey).keys();
-							barnames.sort();
-							barnames.map(function(barname) {
-								$scope.bars.push({name:barname});
-							});
+						}));												
+						total = _(byKey).values()
+								.map(function(v) { return v.length; })
+								.reduce(function(a,b) { return a + b; }, 0);
+
+						var newKeys = _($scope.keys || []).union(_(byKey).keys());
+						if (!$scope.keys || $scope.keys.length !== newKeys.length) { 
+							newKeys.sort();
+							colorscale.domain(newKeys);
 						}
-						$scope.bars.map(function(b) {
-							b.pct = byKey[b.name] ? byKey[b.name].length/total : 0;
+						sa(function() { 
+							$scope.keys = newKeys; 
+							$scope.byKey = $scope.byKey || {};
+							_(byKey).map(function(v,k) { 
+								$scope.byKey[k] = $scope.byKey[k] || {};
+								$scope.byKey[k].width = $scope.toPCT(v);
+							});
+							$scope.total = total;
 						});
 					};
+
+				$scope.toPCT = function(v) { 
+					if (!v || !$scope.total) { return "0px"; }
+					return (v.length/(1.0*$scope.total))*100 + "%";
+				};
 				$scope.$watch('data', update);
 				update($scope.data);
 				window.$ss = $scope;
