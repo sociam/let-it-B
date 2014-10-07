@@ -6,14 +6,19 @@ angular
 	.directive('contributorStripes', function() {
 		return {
 			restrict:'E',
-			scope:{ data:'=', field:'@' },
+			scope:{ data:'=', field:'@', colorscheme:'@' },
 			templateUrl:'tmpl/contributor-stripes.html',
 			controller:function($scope, utils) { 
 				// $scope.data will be the raw data
 				// console.log('stripes scope ', $scope);
 				var u = utils,
-					sa = function(f) { utils.safeApply($scope, f); }, 
-					colorscale = $scope.color = d3.scale.category20(),
+					sa = function(f) { utils.safeApply($scope, f); },
+					colors = { 
+						category20:d3.scale.category20(),
+						category20b:d3.scale.category20b(),
+						category20c:d3.scale.category20c()
+					}, 
+					colorscale = $scope.color = colors[$scope.colorscheme] || d3.scale.category20(),
 					byKey, total,
 					MULTIPLIER = 0.20,
 					update = function(val) { 
